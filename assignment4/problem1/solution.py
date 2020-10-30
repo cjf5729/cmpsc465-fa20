@@ -22,7 +22,6 @@ for vertex in range(0, n):
 for line in range(m):
 	inp = input()
 	outV, inV, edgeDist = [int(num) for num in inp.split(" ")]
-	print("out v:", outV, "in v:", inV, "dist: ", edgeDist)
 	edges[inV - 1].append([outV-1, edgeDist])
 
 contains_negative_cycle = False

@@ -15,27 +15,35 @@ inp_list = [int(vertex) for vertex in input().split(" ") if vertex.isdigit()]
 n, m, s = inp_list[0], inp_list[1], inp_list[2]
 edges = []
 dp_table = []
-for edge in range(0, m):
-	edges.append([0]*3)
+
 	
 for vertex in range(0, n):
 	dp_table.append([sys.maxsize]*n)
+	edges.append([])
 	
 
+print(edges)
 for line in range(m):
 	inp = input()
-	edges[line][0], edges[line][1], edges[line][2] = [int(num) for num in inp.split(" ")]
+	outV, inV, edgeDist = [int(num) for num in inp.split(" ")]
+	print("out v:", outV, "in v:", inV, "dist: ", edgeDist)
+	edges[inV - 1].append([outV-1, edgeDist])
 
+
+print(edges)
 contains_negative_cycle = False
 dp_table[0][s-1] = 0
 for row in range(1, n):
 	for column in range(0, n):
 		dp_table[row][column] = dp_table[row-1][column]
-		for edge in edges:
-			if edge[1]-1 == column:
-				if dp_table[row][column] > dp_table[row-1][edge[0]-1] + edge[2]:
-					if row == n-1:
-						contains_negative_cycle = True
-					dp_table[row][column] = dp_table[row - 1][edge[0]-1] + edge[2]
+		for edge in edges[column]:
+			# edge will be an in edge of vertex column.
+			if dp_table[row][column] > dp_table[row - 1][edge[0]] + edge[1]:
+				if row == n - 1:
+					contains_negative_cycle = True
+				dp_table[row][column] = dp_table[row - 1][edge[0]] + edge[1]
+
+
+		
 
 print(contains_negative_cycle)
